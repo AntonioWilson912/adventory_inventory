@@ -7,10 +7,45 @@
     <title>User Dashboard - Adventory Inventory</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <script src="{% static 'js/user_script.js' %}"  async></script>
     <script src="{% static 'js/bootstrap.js' %}"></script>
 </head>
 <body>
-    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-between">
+        <h1 class="navbar-brand">Hello, {{ this_user.first_name }}</h1>
+        <a href="{% url 'users:logout' %}">Log Out</a>
+    </nav>
+    <div class="container-fluid">
+        <div class="container d-flex justify-content-center">
+                <h1>Main Menu</h1>
+        </div>
+        <div class="row d-flex justify-content-center text-center">
+            <div class="col-auto">
+                <div class="card border-0">
+                    <a href="{% url 'products:all_products' %}" class="bg-primary"><img src="{% static 'img/inventory.png' %}" alt="Inventory" width="100" height="100" class="card-img-top img-thumbnail"></a>
+                    <div class="card-body">
+                        <p class="card-text"><a href="{% url 'products:all_products' %}">Inventory</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="card border-0">
+                    <a href="{% url 'vendors:all_vendors' %}"><img src="{% static 'img/vendor.png' %}" alt="Vendors" width="100" height="100" class="card-img-top img-thumbnail"></a>
+                    <div class="card-body">
+                        <p class="card-text"><a href="{% url 'vendors:all_vendors' %}" class="text-indigo">Vendors</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="card border-0">
+                    <a href="{% url 'users:all_users' %}"><img src="{% static 'img/user.png' %}" alt="Users" width="100" height="100" class="card-img-top img-thumbnail"></a>
+                    <div class="card-body">
+                        <p class="card-text"><a href="{% url 'users:all_users' %}"  class="text-success">Users</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

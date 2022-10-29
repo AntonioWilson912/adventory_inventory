@@ -20,7 +20,7 @@ class UserManager(models.Manager):
         else:
             if not re.findall("[0-9]", post_data["password"]):
                 errors["password_digit"] = "Password must have at least 1 digit."
-            if not re.findall("[^\w\s]"):
+            if not re.findall("[^\w\s]", post_data["password"]):
                 errors["password_special"] = "Password must have at least 1 special character."
             if post_data["password"] != post_data["confirm_password"]:
                 errors["confirm_password"] = "Passwords must match."

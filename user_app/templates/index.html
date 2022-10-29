@@ -11,26 +11,56 @@
     <script src="{% static 'js/bootstrap.js' %}"></script>
 </head>
 <body>
-    <form action="/register" method="post">
-        {% csrf_token %}
-        <h1>Register</h1>
-        
-        <label for="first_name">First Name:</label>
-        <input type="text" name="first_name">
-
-        <label for="last_name">Last Name:</label>
-        <input type="text" name="last_name">
-
-        <label for="email">Email:</label>
-        <input type="text" name="email">
-
-        <label for="password">Password:</label>
-        <input type="text" name="password">
-
-        <label for="confirm_password">Confirm Password:</label>
-        <input type="text" name="confirm_password">
-
-        <input type="submit" value="Register">
-    </form>
+    <nav class="container-fluid navbar navbar-expand-lg navbar-dark bg-dark">
+        <h1 class="navbar-brand">Adventory Inventory</h1>
+    </nav>
+    <div class="container-fluid">
+        <div class="row justify-content-evenly">
+            <div class="col-4">
+                <form action="/register" method="post">
+                    {% csrf_token %}
+                    <h1>Register</h1>
+                    <div class="form-group">
+                        <label for="first_name" class="form-label">First Name:</label>
+                        <input type="text" name="first_name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name" class="form-label">Last Name:</label>
+                        <input type="text" name="last_name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="text" name="email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                    <div class="form-group" class="form-label">
+                        <label for="confirm_password">Confirm Password:</label>
+                        <input type="password" name="confirm_password" class="form-control">
+                    </div>
+            
+                    <input type="submit" class="btn btn-danger" value="Register">
+                </form>
+            </div>
+            <div class="col-4">
+                <form action="/login" method="post">
+                    {% csrf_token %}
+                    <h1>Login</h1>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="text" name="email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                    <a href="{% url 'users:reset_pass' %}" class="d-block">Forgot your password?</a>
+                    <input type="submit" class="btn btn-primary" value="Register">
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

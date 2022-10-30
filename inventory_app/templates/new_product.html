@@ -25,5 +25,61 @@
             </li>
         </ul>
     </nav>
+    <div class="container-fluid p-5">
+        <div class="container">
+            <h1>Add a New Product</h1>
+            <form action="/add_product_to_db" method="post" class="d-flex flex-column">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 col-form-label">Name:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="name" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="barcode" class="col-sm-3 col-form-label">Item Number:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="barcode" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="category_id" class="col-sm-3 col-form-label">Category:</label>
+                    <div class="col-sm-4">
+                        <select name="category_id" id="category_id" class="form-control">
+                            <option value="-1">Select a category...</option>
+                            {% for this_category in all_categories %}
+                                <option value="{{ this_category.id }}">{{ this_category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="vendor_id" class="col-sm-3 col-form-label">Vendor:</label>
+                    <div class="col-sm-4">
+                        <select name="vendor_id" id="vendor_id" class="form-control">
+                            <option value="-1">Select a vendor...</option>
+                            {% for this_vendor in all_vendors %}
+                                <option value="{{ this_vendor.id }}">{{ this_vendor.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-sm-3 col-form-label">Description:</label>
+                    <div class="col-sm-4">
+                        <textarea name="description" id="description" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="price" class="col-sm-3 col-form-label">Price ($):</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="price" class="form-control">
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-primary" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

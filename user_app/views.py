@@ -56,7 +56,7 @@ def dashboard(request):
     if not "user_id" in request.session:
         return redirect("/")
     context = {
-        "this_user": User.objects.filter(id=request.session["user_id"])[0]
+        "this_user": User.objects.filter(id=request.session["user_id"]).first()
     }
     return render(request, context=context, template_name="dashboard.html")
 
@@ -64,7 +64,7 @@ def all_users(request):
     if not "user_id" in request.session:
         return redirect("/")
     context = {
-        "this_user": User.objects.filter(id=request.session["user_id"])[0],
+        "this_user": User.objects.filter(id=request.session["user_id"]).first(),
         "all_users": User.objects.all()
     }
     return render(request, context=context, template_name="all_users.html")
@@ -73,7 +73,7 @@ def new_user_form(request):
     if not "user_id" in request.session:
         return redirect("/")
     context = {
-        "this_user": User.objects.filter(id=request.session["user_id"])[0]
+        "this_user": User.objects.filter(id=request.session["user_id"]).first()
     }
     return render(request, context=context, template_name="new_user.html")
 
@@ -103,8 +103,8 @@ def edit_user(request, user_id):
     if not "user_id" in request.session:
         return redirect("/")
     context = {
-        "this_user": User.objects.filter(id=request.session["user_id"])[0],
-        "requested_user": User.objects.filter(id=user_id)[0]
+        "this_user": User.objects.filter(id=request.session["user_id"]).first(),
+        "requested_user": User.objects.filter(id=user_id).first()
     }
     return render(request, context=context, template_name="edit_user.html")
 
@@ -126,7 +126,7 @@ def update_user_in_db(request, user_id):
     
     password_hash = bcrypt.hashpw(data["password"].encode(), bcrypt.gensalt()).decode()
 
-    current_user = User.objects.filter(id=user_id)[0]
+    current_user = User.objects.filter(id=user_id).first()
     current_user.first_name = data["first_name"]
     current_user.last_name = data["last_name"]
     current_user.is_admin = data["is_admin"]
@@ -138,7 +138,7 @@ def update_user_in_db(request, user_id):
 def delete_user(request, user_id):
     if not "user_id" in request.session:
         return redirect("/")
-    user_to_delete = User.objects.filter(id=user_id)[0]
+    user_to_delete = User.objects.filter(id=user_id).first()
     user_to_delete.delete()
     return redirect("/users")
 

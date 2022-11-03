@@ -26,34 +26,31 @@
         </ul>
     </nav>
     <div class="container-fluid">
-        <h1>All Users</h1>
+        <h1>All Products</h1>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Admin</th>
-                    {% if this_user.is_admin == 1 %}
-                        <th>Actions</th>
-                    {% endif %}
+                    <th>Item Number</th>
+                    <th>Vendor Number</th>
+                    <th>Category</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {% for curr_user in all_users %}
+                {% for curr_product in all_products %}
                 <tr>
-                    <td>{{ curr_user.first_name }} {{ curr_user.last_name }}</td>
-                    <td>{{ curr_user.email }}</td>
+                    <td>{{ curr_product.barcode }}</td>
+                    <td>{{ curr_product.vendor_number }}</td>
+                    <td>{{ curr_product.category.name }}</td>
+                    <td>{{ curr_product.name }}</td>
+                    <td>${{ curr_product.price }}</td>
                     <td>
-                        {% if curr_user.is_admin == 1 %}
-                            <p>Yes</p>
-                        {% else %}
-                            <p>No</p>
-                        {% endif %}
-                    </td>
-                    <td>
+                        <a href="/products/{{ curr_product.id }}">View</a>
                         {% if this_user.is_admin == 1 %}
-                        <a href="/users/{{ curr_user.id}}/edit">Edit</a> |
-                        <a href="/users/{{ curr_user.id}}/delete">Delete</a>
+                        | <a href="/products/{{ curr_product.id }}/edit">Edit</a>
+                        | <a href="/products/{{ curr_product.id }}/delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vendor - Adventory Inventory</title>
+    <title>{{ this_vendor.name }} - Adventory Inventory</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <script src="{% static 'js/vendor_script.js' %}"  async></script>
@@ -25,5 +25,47 @@
             </li>
         </ul>
     </nav>
+    <div class="container-fluid m-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-10 border border-dark">
+                <div class="row">
+                    <div class="col-2">
+                        <p>Vendor Name:</p>
+                    </div>
+                    <div class="col-8">
+                        <p>{{ this_vendor.name }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p>Description:</p>
+                    </div>
+                    <div class="col-8">
+                        <p>{{ this_vendor.description }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p>Address:</p>
+                    </div>
+                    <div class="col-8">
+                        <p>{{ this_vendor.address.address }}</p>
+                        <p>{{ this_vendor.address.city }}, {{ this_vendor.address.state }} {{ this_vendor.address.zip_code }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p>Created By:</p>
+                    </div>
+                    <div class="col-8">
+                        <p>{{ this_vendor.creator.first_name }} {{ this_vendor.creator.last_name }}</p>
+                    </div>
+                </div>
+                {% if this_user.is_admin == 1 %}
+                <p><a href="/vendors/{{ this_vendor.id }}/edit">Edit</a> | <a href="/vendors/{{ this_vendor.id }}/delete">DELETE</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </body>
 </html>

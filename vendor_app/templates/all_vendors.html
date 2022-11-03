@@ -25,5 +25,32 @@
             </li>
         </ul>
     </nav>
+    <div class="container-fluid">
+        <h1>All Vendors</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Products in Inventory</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for curr_vendor in all_vendors %}
+                <tr>
+                    <td>{{ curr_vendor.name }}</td>
+                    <td>{{ curr_vendor.product_count }}</td>
+                    <td>
+                        <a href="/vendors/{{ curr_vendor.id }}">View</a>
+                        {% if this_user.is_admin == 1 %}
+                        | <a href="/vendors/{{ curr_vendor.id}}/edit">Edit</a> |
+                        <a href="/vendors/{{ curr_vendor.id}}/delete">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

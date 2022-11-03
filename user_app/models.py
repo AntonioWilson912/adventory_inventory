@@ -15,6 +15,23 @@ class UserManager(models.Manager):
             errors["email"] = "Invalid email."
         elif User.objects.filter(email=post_data["email"]):
             errors["email"] = "Invalid email."
+        if "is_admin" in post_data and "is_admin" == -1:
+            errors["is_admin"] = "Must choose whether user is an admin."
+        if len(post_data["password"]) < 8:
+            errors["password"] = "Password must be at least 8 characters."
+        else:
+            if not re.findall("[0-9]", post_data["password"]):
+                errors["password_digit"] = "Password must have at least 1 digit."
+            if not re.findall("[^\w\s]", post_data["password"]):
+                errors["password_special"] = "Password must have at least 1 special character."
+            if post_data["password"] != post_data["confirm_password"]:
+                errors["confirm_password"] = "Passwords must match."
+        return errors
+
+    def validate_new_password(self, post_data):
+        errors = {}
+        if not User.objects.filter(email=post_data["email"]):
+            errors["email"] = "No account is registered under that email."
         if len(post_data["password"]) < 8:
             errors["password"] = "Password must be at least 8 characters."
         else:
@@ -40,6 +57,25 @@ class UserManager(models.Manager):
                 the_user = existing_user[0]
                 if not bcrypt.checkpw(post_data["password"].encode(), the_user.password.encode()):
                     errors["password"] = "Invalid email/password"
+        return errors
+
+    def validate_update_user(self, post_data):
+        errors = {}
+        if len(post_data["first_name"]) < 3:
+            errors["first_name"] = "First name must be at least 3 characters."
+        if len(post_data["last_name"]) < 3:
+            errors["last_name"] = "Last name must be at least 3 characters."
+        if not "is_admin" in post_data:
+            errors["is_admin"] = "It must be decided whether user is admin or not."
+        if len(post_data["password"]) < 8:
+            errors["password"] = "Password must be at least 8 characters."
+        else:
+            if not re.findall("[0-9]", post_data["password"]):
+                errors["password_digit"] = "Password must have at least 1 digit."
+            if not re.findall("[^\w\s]", post_data["password"]):
+                errors["password_special"] = "Password must have at least 1 special character."
+            if post_data["password"] != post_data["confirm_password"]:
+                errors["confirm_password"] = "Passwords must match."
         return errors
 
     def validate_new_password(self, post_data):

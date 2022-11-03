@@ -25,5 +25,41 @@
             </li>
         </ul>
     </nav>
+    <div class="container-fluid">
+        <h1>All Users</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Admin</th>
+                    {% if this_user.is_admin == 1 %}
+                        <th>Actions</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for curr_user in all_users %}
+                <tr>
+                    <td>{{ curr_user.first_name }} {{ curr_user.last_name }}</td>
+                    <td>{{ curr_user.email }}</td>
+                    <td>
+                        {% if curr_user.is_admin == 1 %}
+                            <p>Yes</p>
+                        {% else %}
+                            <p>No</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if this_user.is_admin == 1 %}
+                        <a href="/users/{{ curr_user.id}}/edit">Edit</a> |
+                        <a href="/users/{{ curr_user.id}}/delete">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

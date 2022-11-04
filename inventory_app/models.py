@@ -42,13 +42,13 @@ class ProductManager(models.Manager):
         
         return errors
 
-    def validate_existing_product(self, post_data):
+    def validate_update_product(self, post_data):
         errors = {}
         if len(post_data["name"]) < 3:
             errors["name"] = "Name must be at least 3 characters long."
         if len(post_data["barcode"]) == 0:
             errors["barcode"] = "Barcode/item number must be present."
-        elif Product.objects.filter(barcode=post_data["barcode"]):
+        elif len(Product.objects.filter(barcode=post_data["barcode"])) > 1:
             errors["barcode"] = "Barcode/item nunmber must be unique."
         if post_data["category_id"] == -1: # -1 indicates category not chosen
             errors["category"] = "Category must be chosen."

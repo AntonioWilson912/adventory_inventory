@@ -111,8 +111,9 @@ def update_product(request, product_id):
     }
 
     errors = Product.objects.validate_update_product(data)
+    print(errors)
     if len(errors) > 0:
-        return redirect("/products/new") # TODO: AJAX response
+        return redirect(f"/products/{product_id}/edit") # TODO: AJAX response
 
     updated_product = Product.objects.get(id=product_id)
     product_updater = User.objects.filter(id=request.session["user_id"]).first()

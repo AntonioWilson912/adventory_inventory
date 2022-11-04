@@ -9,6 +9,13 @@ def is_float(num):
     except ValueError:
         return False # bad data
 
+def is_int(num):
+    try:
+        int(num)
+        return True # The num is in fact an integer
+    except ValueError:
+        return False # bad data
+
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -24,12 +31,32 @@ class ProductManager(models.Manager):
             errors["barcode"] = "Barcode/item number must be present."
         elif Product.objects.filter(barcode=post_data["barcode"]):
             errors["barcode"] = "Barcode/item nunmber must be unique."
+        if len(post_data["sku"]) == 0:
+            errors["sku"] = "SKU/vendor number must be present."
         if post_data["category_id"] == -1: # -1 indicates category not chosen
             errors["category"] = "Category must be chosen."
-        if post_data["vendor_id"] == -1: # -1 indicates vendor not chosen
-            errors["vendor"] = "Vendor must be chosen."
+        if not post_data["qty_available"] or not is_int(post_data["qty_available"]) or int(post_data["qty_available"]) <= 0.00:
+            errors["qty_available"] = "Quantity available must be a nonnegative whole number."
         if not post_data["price"] or not is_float(post_data["price"]) or float(post_data["price"]) <= 0.00:
             errors["price"] = "Price must be a valid decimal number greater than 0.00"
+        
+        return errors
+
+    def validate_existing_product(self, post_data):
+        errors = {}
+        if len(post_data["name"]) < 3:
+            errors["name"] = "Name must be at least 3 characters long."
+        if len(post_data["barcode"]) == 0:
+            errors["barcode"] = "Barcode/item number must be present."
+        elif Product.objects.filter(barcode=post_data["barcode"]):
+            errors["barcode"] = "Barcode/item nunmber must be unique."
+        if post_data["category_id"] == -1: # -1 indicates category not chosen
+            errors["category"] = "Category must be chosen."
+        if not post_data["qty_available"] or not is_float(post_data["qty_available"]) or float(post_data["qty_available"]) < 0:
+            errors["qty_available"] = "qty_available must be a valid decimal number greater than 0.00"
+        if not post_data["price"] or not is_float(post_data["price"]) or float(post_data["price"]) <= 0.00:
+            errors["price"] = "Price must be a valid decimal number greater than 0.00"
+        
         return errors
 
 class Product(models.Model):
@@ -41,8 +68,10 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, related_name="categories", on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, related_name="product_creators", on_delete=models.CASCADE)
     product_updates = models.ManyToManyField(User, through="ProductUpdate")
     product_vendors = models.ManyToManyField(Vendor, through="ProductVendor")
+    objects = ProductManager()
 
 class ProductUpdate(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

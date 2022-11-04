@@ -52,15 +52,17 @@ def add_vendor_to_db(request):
         "address": request.POST["address"],
         "city": request.POST["city"],
         "state": request.POST["state"].upper(),
-        "zip_code": request.POST["zip_code"]
+        "zip_code": request.POST["zip_code"],
     }
 
     errors = Vendor.objects.validate_new_vendor(data)  # For later - verify an exact replica of the vendor does not exist elsewhere
     if len(errors) > 0:
         return redirect("/vendors/new") # TODO: Change this to AJAX later
 
+    vendor_creator = User.objects.filter(id=request.session["user_id"]).first()
+
     vendor_address = Address.objects.create(address=data["address"], city=data["city"], state=data["state"], zip_code=data["zip_code"])
-    Vendor.objects.create(name=data["name"], description=data["description"], address=vendor_address)
+    Vendor.objects.create(name=data["name"], description=data["description"], address=vendor_address, creator=vendor_creator)
 
     return redirect("/vendors")
 

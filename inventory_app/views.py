@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from user_app.models import User
 from .models import *
 from vendor_app.models import Vendor
@@ -67,10 +68,10 @@ def add_product_to_db(request):
         "cost": request.POST["cost"],
         "price": request.POST["price"]
     }
-
-    errors = Product.objects.validate_product(data)
+    # print(data)
+    errors = Product.objects.validate_new_product(data)
     if len(errors) > 0:
-        return redirect("/products/new") # TODO: AJAX response
+        return JsonResponse(errors)
 
     product_creator = User.objects.filter(id=request.session["user_id"]).first()
     product_category = Category.objects.get(id=data["category_id"])
@@ -80,7 +81,7 @@ def add_product_to_db(request):
     ProductVendor.objects.create(product=new_product, vendor=product_vendor, sku=data["sku"], cost=data["cost"], is_primary_vendor=1)
     ProductUpdate.objects.create(product=new_product, user=product_creator)
 
-    return redirect("/products")
+    return JsonResponse({ 'message': 'All good!' })
 
 def add_product_vendor(request, product_id):
     if not "user_id" in request.session:
@@ -96,8 +97,7 @@ def add_product_vendor(request, product_id):
 
     print(errors)
     if len(errors) > 0:
-        # return JsonResponse(errors)
-        return redirect(f"/products/{product_id}")
+        return JsonResponse(errors)
 
     # otherwise, create the product vendor, set the primary to not primary and set the new one to primary
     this_product = Product.objects.get(id=product_id)
@@ -108,7 +108,7 @@ def add_product_vendor(request, product_id):
     product_vendor = Vendor.objects.get(id=data["vendor_id"])
     ProductVendor.objects.create(product=this_product, vendor=product_vendor, sku=data["sku"], cost=data["cost"], is_primary_vendor=1)
 
-    return redirect(f"/products/{product_id}")
+    return JsonResponse({ 'product': product_id})
 
 def new_product_form(request):
     if not "user_id" in request.session:
@@ -150,7 +150,7 @@ def update_product(request, product_id):
     errors = Product.objects.validate_update_product(data)
     print(errors)
     if len(errors) > 0:
-        return redirect(f"/products/{product_id}/edit") # TODO: AJAX response
+        return JsonResponse(errors)
 
     updated_product = Product.objects.get(id=product_id)
     product_updater = User.objects.filter(id=request.session["user_id"]).first()
@@ -166,7 +166,25 @@ def update_product(request, product_id):
     product_update.user = product_updater
     product_update.save()
 
-    return redirect("/products")
+    return JsonResponse({ 'message': 'All good!' })
+
+def update_primary_vendor(request, product_id):
+    if not "user_id" in request.session:
+        return redirect("/")
+
+    new_primary_vendor = Vendor.objects.get(id=request.POST["vendor_id"])
+    current_product = Product.objects.get(id=product_id)
+
+    current_product_vendors = ProductVendor.objects.filter(product=current_product)
+    for current_product_vendor in current_product_vendors:
+        if current_product_vendor.vendor.id == new_primary_vendor.id:
+            current_product_vendor.is_primary_vendor = 1
+            current_product_vendor.save()
+        else:
+            current_product_vendor.is_primary_vendor = 0
+            current_product_vendor.save()
+
+    return JsonResponse({ 'message': 'All good!' })
 
 def delete_product(request, product_id):
     if not "user_id" in request.session:
@@ -174,4 +192,5 @@ def delete_product(request, product_id):
         
     product_to_delete = Product.objects.get(id=product_id)
     product_to_delete.delete()
-    return redirect("/products")
+    
+    return JsonResponse({ 'message': 'All good!' })

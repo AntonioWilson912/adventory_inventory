@@ -1,8 +1,8 @@
 $(document).ready(function() {
-    console.log("JS loaded.");
+    // console.log("JS loaded.");
     $("#new-vendor-form").on("submit", function(e) {
         e.preventDefault();
-        console.log("Form submitted.");
+        // console.log("Form submitted.");
         $.ajax( {
             type: "POST",
             url: "/vendors/add_vendor_to_db",
@@ -19,19 +19,19 @@ $(document).ready(function() {
     
             success: function(data) {
                 if (data.message) {
-                    console.log("Vendor creation was successful");
+                    // console.log("Vendor creation was successful");
                     window.location = "/vendors";
                 }
                 else if (data.last_page) {
-                    console.log("Navigating back to the previous page...");
+                    // console.log("Navigating back to the previous page...");
                     if (data.last_page == "view_product")
                         window.location = "/products/" + data.product_id;
                     else if (data.last_page == "new_product")
                         window.location = "/products/new";
                 }
                 else {
-                    console.log("There were errors.");
-                    console.log(data);
+                    // console.log("There were errors.");
+                    // console.log(data);
                     $("#new-vendor-errors").html("");
                     for (var msg in data) {
                         $("#new-vendor-errors").append("<li class='text-danger'>" + data[msg] + "</li>");
@@ -46,7 +46,7 @@ $(document).ready(function() {
     });
     $("#edit-vendor-form").on("submit", function(e) {
         e.preventDefault();
-        console.log("Form submitted.");
+        // console.log("Form submitted.");
         $.ajax( {
             type: "POST",
             url: "/vendors/" + $("input[name=vendor_id]").val() + "/update",
@@ -63,12 +63,12 @@ $(document).ready(function() {
     
             success: function(data) {
                 if (data.message) {
-                    console.log("Vendor edit was successful");
+                    // console.log("Vendor edit was successful");
                     window.location = "/vendors";
                 }
                 else {
-                    console.log("There were errors.");
-                    console.log(data);
+                    // console.log("There were errors.");
+                    // console.log(data);
                     $("#edit-vendor-errors").html("");
                     for (var msg in data) {
                         $("#edit-vendor-errors").append("<li class='text-danger'>" + data[msg] + "</li>");

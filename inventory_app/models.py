@@ -23,7 +23,7 @@ class Category(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class ProductManager(models.Manager):
-    def validate_product(self, post_data):
+    def validate_new_product(self, post_data):
         errors = {}
         if len(post_data["name"]) < 3:
             errors["name"] = "Name must be at least 3 characters long."
@@ -33,10 +33,12 @@ class ProductManager(models.Manager):
             errors["barcode"] = "Barcode/item nunmber must be unique."
         if len(post_data["sku"]) == 0:
             errors["sku"] = "SKU/vendor number must be present."
-        if post_data["category_id"] == -1: # -1 indicates category not chosen
+        if int(post_data["category_id"]) == -1: # -1 indicates category not chosen
             errors["category"] = "Category must be chosen."
-        if not post_data["qty_available"] or not is_int(post_data["qty_available"]) or int(post_data["qty_available"]) <= 0.00:
-            errors["qty_available"] = "Quantity available must be a nonnegative whole number."
+        if int(post_data["vendor_id"]) == -1: # -1 indicates vendor not chosen
+            errors["vendor"] = "Vendor must be chosen."
+        if not post_data["cost"] or not is_float(post_data["cost"]) or float(post_data["cost"]) <= 0.00:
+            errors["cost"] = "Cost must be a valid decimal number greater than 0.00"
         if not post_data["price"] or not is_float(post_data["price"]) or float(post_data["price"]) <= 0.00:
             errors["price"] = "Price must be a valid decimal number greater than 0.00"
         
@@ -50,10 +52,10 @@ class ProductManager(models.Manager):
             errors["barcode"] = "Barcode/item number must be present."
         elif len(Product.objects.filter(barcode=post_data["barcode"])) > 1:
             errors["barcode"] = "Barcode/item nunmber must be unique."
-        if post_data["category_id"] == -1: # -1 indicates category not chosen
+        if int(post_data["category_id"]) == -1: # -1 indicates category not chosen
             errors["category"] = "Category must be chosen."
-        if not post_data["qty_available"] or not is_float(post_data["qty_available"]) or float(post_data["qty_available"]) < 0:
-            errors["qty_available"] = "qty_available must be a valid decimal number greater than 0.00"
+        if not post_data["qty_available"] or not is_int(post_data["qty_available"]) or int(post_data["qty_available"]) < 0:
+            errors["qty_available"] = "Quantity available must be a valid whole number of at least 0"
         if not post_data["price"] or not is_float(post_data["price"]) or float(post_data["price"]) <= 0.00:
             errors["price"] = "Price must be a valid decimal number greater than 0.00"
         

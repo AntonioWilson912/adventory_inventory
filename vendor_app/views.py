@@ -66,8 +66,11 @@ def add_vendor_to_db(request):
 
     vendor_address = Address.objects.create(address=data["address"], city=data["city"], state=data["state"], zip_code=data["zip_code"])
     Vendor.objects.create(name=data["name"], description=data["description"], address=vendor_address, creator=vendor_creator)
-    if "last_page" in request.session and request.session["last_page"] == "view_product":
-        return JsonResponse({ 'last_page': request.session["last_page"], 'product_id': request.session["product_id"] })
+    if "last_page" in request.session:
+        if request.session["last_page"] == "view_product":
+            return JsonResponse({ 'last_page': request.session["last_page"], 'product_id': request.session["product_id"] })
+        elif request.session["last_page"] == "new_product":
+            return JsonResponse({ 'last_page': request.session["last_page"] })
     return JsonResponse({ 'message': 'All good!' })
 
 def edit_vendor(request, vendor_id):

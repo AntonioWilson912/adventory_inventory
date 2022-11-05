@@ -7,8 +7,6 @@
     <title>{{ requested_user.first_name }} {{ requested_user.last_name}} - Edit - Adventory Inventory</title>
     {% load static %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <script src="{% static 'js/user_script.js' %}"  async></script>
-    <script src="{% static 'js/bootstrap.js' %}"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-between">
@@ -28,8 +26,10 @@
     <div class="container-fluid p-5">
         <div class="container">
             <h1>Edit {{ requested_user.first_name }} {{ requested_user.last_name }}</h1>
-            <form action="/users/{{ requested_user.id }}/update_user_in_db" method="post" class="d-flex flex-column">
+            <form id="edit-user-form" action="/users/{{ requested_user.id }}/update_user_in_db" method="post" class="d-flex flex-column">
                 {% csrf_token %}
+                <ul id="edit-user-errors"></ul>
+                <input type="hidden" name="user_id" value="{{ requested_user.id }}">
                 <div class="form-group row">
                     <label for="first_name" class="col-sm-3 col-form-label">First Name:</label>
                     <div class="col-sm-4">
@@ -88,7 +88,7 @@
             </form>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+    <script src="{% static 'js/user_script.js' %}"  async></script>
 </body>
 </html>

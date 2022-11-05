@@ -44,6 +44,9 @@ def view_product(request, product_id):
         "all_product_vendors": all_product_vendors,
         "not_product_vendors": not_product_vendors
     }
+
+    request.session["last_page"] = "view_product"
+    request.session["product_id"] = product_id
     return render(request, context=context, template_name="view_product.html")
 
 def add_product_to_db(request):
@@ -74,6 +77,34 @@ def add_product_to_db(request):
     ProductUpdate.objects.create(product=new_product, user=product_creator)
 
     return redirect("/products")
+
+def add_product_vendor(request, product_id):
+    if not "user_id" in request.session:
+        return redirect("/")
+
+    data = {
+        "vendor_id": request.POST["vendor_id"],
+        "sku": request.POST["sku"],
+        "cost": request.POST["cost"]
+    }
+
+    errors = Product.objects.validate_product_vendor(data)
+
+    print(errors)
+    if len(errors) > 0:
+        # return JsonResponse(errors)
+        return redirect(f"/products/{product_id}")
+
+    # otherwise, create the product vendor, set the primary to not primary and set the new one to primary
+    this_product = Product.objects.get(id=product_id)
+    previous_primary_vendor = ProductVendor.objects.filter(product=this_product).first()
+    previous_primary_vendor.is_primary_vendor = 0
+    previous_primary_vendor.save()
+
+    product_vendor = Vendor.objects.get(id=data["vendor_id"])
+    ProductVendor.objects.create(product=this_product, vendor=product_vendor, sku=data["sku"], cost=data["cost"], is_primary_vendor=1)
+
+    return redirect(f"/products/{product_id}")
 
 def new_product_form(request):
     if not "user_id" in request.session:

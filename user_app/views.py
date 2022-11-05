@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from .models import User
 import bcrypt
 
@@ -14,30 +15,31 @@ def register_user(request):
         "password": request.POST["password"],
         "confirm_password": request.POST["confirm_password"]
     }
-    print(data)
+    #print(data)
     errors = User.objects.validate_new_user(data)
     if len(errors) > 0:
-        return redirect("/") # TODO: Change this to be an AJAX response later
+        return JsonResponse(errors) # Errors is already a dictionary
     
     password_hash = bcrypt.hashpw(data["password"].encode(), bcrypt.gensalt()).decode()
     new_user = User.objects.create(first_name=data["first_name"], last_name=data["last_name"], email=data["email"], password=password_hash, is_admin=0)
     request.session["user_id"] = new_user.id
 
-    return redirect("/dashboard")
+    return JsonResponse({ 'message': 'All good!' })
 
 def login_user(request):
     data = {
         "email": request.POST["email"],
         "password": request.POST["password"]
     }
+    #print(data)
     errors = User.objects.validate_existing_user(data)
     if len(errors) > 0:
-        return redirect("/") # TODO: Change this to be an AJAX response later
+        return JsonResponse(errors)
 
     user = User.objects.filter(email=data["email"])
     request.session["user_id"] = user[0].id
 
-    return redirect("/dashboard")
+    return JsonResponse({ 'message': 'All good!' })
     
 def reset_password_page(request):
     return render(request, template_name="reset_password.html")
@@ -48,9 +50,11 @@ def reset_password_in_db(request):
         "password": request.POST["password"],
         "confirm_password": request.POST["confirm_password"]
     }
+    print(data)
     errors = User.objects.validate_new_password(data)
     if len(errors) > 0:
-        return redirect("/reset_password") # TODO: Change this to be an AJAX response later
+        return JsonResponse(errors)
+    return JsonResponse({ 'message': 'All good!' })
 
 def dashboard(request):
     if not "user_id" in request.session:
@@ -92,12 +96,12 @@ def create_user_in_db(request):
     errors = User.objects.validate_new_user(data)
     if len(errors) > 0:
         print(errors)
-        return redirect(f"/users/new") # TODO: Change this to be an AJAX response later
+        return JsonResponse(errors)
     
     password_hash = bcrypt.hashpw(data["password"].encode(), bcrypt.gensalt()).decode()
     User.objects.create(first_name=data["first_name"], last_name=data["last_name"], email=data["email"], password=password_hash, is_admin=data["is_admin"])
 
-    return redirect("/users")
+    return JsonResponse({ 'message': 'All good!' })
 
 def edit_user(request, user_id):
     if not "user_id" in request.session:
@@ -121,7 +125,7 @@ def update_user_in_db(request, user_id):
     print(data)
     errors = User.objects.validate_update_user(data)
     if len(errors) > 0:
-        print(errors)
+        return JsonResponse(errors)
         return redirect(f"/users/{user_id}/edit_user") # TODO: Change this to be an AJAX response later
     
     password_hash = bcrypt.hashpw(data["password"].encode(), bcrypt.gensalt()).decode()
@@ -133,6 +137,7 @@ def update_user_in_db(request, user_id):
     current_user.password = password_hash
     current_user.save()
 
+    return JsonResponse({ 'message': 'All good!' })
     return redirect("/users")
 
 def delete_user(request, user_id):

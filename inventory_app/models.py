@@ -59,6 +59,16 @@ class ProductManager(models.Manager):
         
         return errors
 
+    def validate_product_vendor(self, post_data):
+        errors = {}
+        if int(post_data["vendor_id"]) == -1:
+            errors["vendor_id"] = "Vendor must be chosen."
+        if len(post_data["sku"]) == 0:
+            errors["sku"] = "SKU/vendor number must be present."
+        if not post_data["cost"] or not is_float(post_data["cost"]) or float(post_data["cost"]) <= 0.00:
+            errors["cost"] = "Cost must be a valid decimal number greater than 0.00"
+        return errors
+
 class Product(models.Model):
     barcode = models.CharField(max_length=12)
     name = models.CharField(max_length=255)

@@ -10,7 +10,7 @@ class VendorManager(models.Manager):
         if len(post_data["address"]) < 3:
             errors["address"] = "Address must be at least 3 characters."
         if len(post_data["city"]) < 3:
-            errors["city"] = "Address must be at least 3 characters."
+            errors["city"] = "City must be at least 3 characters."
         if len(post_data["state"]) != 2:
             errors["state"] = "State must be exactly 2 characters long."
         if len(post_data["zip_code"]) != 5 or not post_data["zip_code"].isdigit():

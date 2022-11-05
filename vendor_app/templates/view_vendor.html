@@ -61,6 +61,22 @@
                         <p>{{ this_vendor.creator.first_name }} {{ this_vendor.creator.last_name }}</p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p>All Products</p>
+                    </div>
+                    <div class="col-8">
+                        {% if all_vendor_products|length > 0 %}
+                        <ul class="list-group">
+                            {% for this_vendor_product in all_vendor_products %}
+                            <li class="list-group-item">{{ this_vendor_product.sku }} - {{ this_vendor_product.product.name }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>There are no products for this vendor.</p>
+                        {% endif %}
+                    </div>
+                </div>
                 {% if this_user.is_admin == 1 %}
                 <p><a href="/vendors/{{ this_vendor.id }}/edit">Edit</a> | <a href="/vendors/{{ this_vendor.id }}/delete">DELETE</a></p>
                 {% endif %}

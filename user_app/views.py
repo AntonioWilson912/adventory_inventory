@@ -5,6 +5,7 @@ import bcrypt
 
 # Create your views here.
 def index(request):
+    request.session["last_page"] = "index"
     return render(request, template_name="index.html")
 
 def register_user(request):
@@ -42,6 +43,7 @@ def login_user(request):
     return JsonResponse({ 'message': 'All good!' })
     
 def reset_password_page(request):
+    request.session["last_page"] = "reset_password"
     return render(request, template_name="reset_password.html")
 
 def reset_password_in_db(request):
@@ -59,6 +61,7 @@ def reset_password_in_db(request):
 def dashboard(request):
     if not "user_id" in request.session:
         return redirect("/")
+    request.session["last_page"] = "dashboard"
     context = {
         "this_user": User.objects.filter(id=request.session["user_id"]).first()
     }
@@ -67,6 +70,7 @@ def dashboard(request):
 def all_users(request):
     if not "user_id" in request.session:
         return redirect("/")
+    request.session["last_page"] = "all_users"
     context = {
         "this_user": User.objects.filter(id=request.session["user_id"]).first(),
         "all_users": User.objects.all()
@@ -76,6 +80,7 @@ def all_users(request):
 def new_user_form(request):
     if not "user_id" in request.session:
         return redirect("/")
+    request.session["last_page"] = "new_user"
     context = {
         "this_user": User.objects.filter(id=request.session["user_id"]).first()
     }
@@ -106,6 +111,7 @@ def create_user_in_db(request):
 def edit_user(request, user_id):
     if not "user_id" in request.session:
         return redirect("/")
+    request.session["last_page"] = "edit_user"
     context = {
         "this_user": User.objects.filter(id=request.session["user_id"]).first(),
         "requested_user": User.objects.filter(id=user_id).first()
@@ -122,11 +128,9 @@ def update_user_in_db(request, user_id):
         "password": request.POST["password"],
         "confirm_password": request.POST["confirm_password"]
     }
-    print(data)
     errors = User.objects.validate_update_user(data)
     if len(errors) > 0:
         return JsonResponse(errors)
-        return redirect(f"/users/{user_id}/edit_user") # TODO: Change this to be an AJAX response later
     
     password_hash = bcrypt.hashpw(data["password"].encode(), bcrypt.gensalt()).decode()
 
@@ -138,7 +142,6 @@ def update_user_in_db(request, user_id):
     current_user.save()
 
     return JsonResponse({ 'message': 'All good!' })
-    return redirect("/users")
 
 def delete_user(request, user_id):
     if not "user_id" in request.session:

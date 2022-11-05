@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
 from user_app.models import User
 from .models import *
 from vendor_app.models import Vendor
@@ -11,6 +11,8 @@ def all_products(request):
     all_products = Product.objects.all()
     for this_product in all_products:
         this_product.sku = ProductVendor.objects.filter(product=this_product, is_primary_vendor=1).first().sku
+
+    request.session["last_page"] = "all_products"
 
     context = {
         "this_user": User.objects.filter(id=request.session["user_id"]).first(),
@@ -30,13 +32,15 @@ def view_product(request, product_id):
 
     # get vendors not associated with the product
     all_vendors = Vendor.objects.all()
+
     all_product_vendors = ProductVendor.objects.filter(product=this_product)
-    not_product_vendors = []
-    for this_vendor in all_vendors:
-        for this_product_vendor in all_product_vendors:
-            if this_product_vendor.vendor.id == this_vendor.id:
-                continue
-            not_product_vendors.append(this_vendor)
+    all_product_vendor_vendors = []
+    for product_vendor in all_product_vendors:
+        all_product_vendor_vendors.append(product_vendor.vendor)
+
+    not_product_vendors = list(set(all_vendors) - set(all_product_vendor_vendors))
+
+    print(not_product_vendors)
         
     context = {
         "this_user": User.objects.filter(id=request.session["user_id"]).first(),
@@ -115,6 +119,7 @@ def new_product_form(request):
         "all_categories": Category.objects.all().order_by("name"),
         "all_vendors": Vendor.objects.all().order_by("name")
     }
+    request.session["last_page"] = "new_product"
     return render(request, context=context, template_name="new_product.html")
 
 def edit_product(request, product_id):
@@ -126,6 +131,7 @@ def edit_product(request, product_id):
         "this_product": Product.objects.get(id=product_id),
         "all_categories": Category.objects.all().order_by("name")
     }
+    request.session["last_page"] = "edit_product"
     return render(request, context=context, template_name="edit_product.html")
 
 def update_product(request, product_id):

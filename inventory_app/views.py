@@ -97,7 +97,7 @@ def add_product_vendor(request, product_id):
 
     # otherwise, create the product vendor, set the primary to not primary and set the new one to primary
     this_product = Product.objects.get(id=product_id)
-    previous_primary_vendor = ProductVendor.objects.filter(product=this_product).first()
+    previous_primary_vendor = ProductVendor.objects.filter(product=this_product, is_primary_vendor=1).first()
     previous_primary_vendor.is_primary_vendor = 0
     previous_primary_vendor.save()
 

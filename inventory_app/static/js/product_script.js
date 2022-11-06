@@ -165,13 +165,78 @@ $(document).ready(function() {
             })
         }
     });
+    loadProducts("", "all", "all");
     $("#search-product-form").on("submit", function(e) {
         e.preventDefault();
-        console.log("Searching for products with the name " + $("#search_term").val() + " and category " + $("#search_category").val() + " and vendor " + $("#search_vendor").val());
-        loadProducts();
+        var searchTerm = $("#search_term").val();
+        var searchCategory = $("#search_category").val();
+        var searchVendor = $("#search_vendor").val();
+        // console.log("Searching for products with the name " + $("#search_term").val() + " and category " + $("#search_category").val() + " and vendor " + $("#search_vendor").val());
+        loadProducts(searchTerm, searchCategory, searchVendor);
     });
 });
 
-function loadProducts() {
+function loadProducts(searchTerm, searchCategory, searchVendor) {
+    $.ajax( {
+        type: "POST",
+        url: "/products/search_products",
+        data: {
+            search_term: searchTerm,
+            search_category: searchCategory,
+            search_vendor: searchVendor,
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+            dataType: "json"
+        },
+        success: function(data) {
+            // console.log("Successfully retrieved products from the server.");
+            // console.log(data.all_products);
+            $("#all-products").html("")
+            if (data.all_products.length > 0) {
+                for (var index = 0; index < data.all_products.length; index++) {
+                    // console.log(data.all_products[index]);
+                    var productRow = document.createElement("tr");
+    
+                    var barcode = document.createElement("td");
+                    barcode.innerHTML = data.all_products[index].barcode;
+    
+                    var sku = document.createElement("td");
+                    sku.innerHTML = data.all_products[index].sku;
+    
+                    var category = document.createElement("td");
+                    category.innerHTML = data.all_products[index].category;
+    
+                    var product = document.createElement("td");
+                    product.innerHTML = data.all_products[index].name;
+    
+                    var price = document.createElement("td");
+                    price.innerHTML = "$" + data.all_products[index].price;
+    
+                    var actions = document.createElement("td");
+                    actions.innerHTML = `<a href="/products/${data.all_products[index].id}">View</a>`;
+                    if ($("#is_admin").val() == 1) {
+                        actions.innerHTML += `
+                        | <a href="/products/${data.all_products[index].id}/edit">Edit</a>
+                        | <a href="/products/${data.all_products[index].id}/delete">Delete</a>
+                        `;
+                    }
+    
+                    productRow.append(barcode, sku, category, product, price, actions);
+                    $("#all-products").append(productRow);
+                }
+            }
+            else {
+                var emptyProducts = document.createElement("tr");
+                var emptyProductMessage = document.createElement("td");
+                emptyProductMessage.colSpan = "6";
+                emptyProductMessage.classList.add("text-center")
+                emptyProductMessage.innerText = "There were no products found with that search term.";
 
+                emptyProducts.append(emptyProductMessage);
+                $("#all-products").html(emptyProducts);
+            }
+        },
+        error: function(errorMessage) {
+            console.log(errorMessage);
+        }
+    })
 }

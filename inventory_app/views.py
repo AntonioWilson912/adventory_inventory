@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.forms.models import model_to_dict
+from django.db.models import Model
 from user_app.models import User
 from .models import *
 from vendor_app.models import Vendor
@@ -24,7 +26,100 @@ def all_products(request):
     return render(request, context=context, template_name="all_products.html")
 
 def search_products(request):
-    pass
+    if not "user_id" in request.session:
+        return redirect("/")
+
+    all_products = []
+    all_products_dict = {}
+
+    if len(request.POST["search_term"]) == 0:
+        if request.POST["search_category"] == "all":
+            if request.POST["search_vendor"] == "all":
+                all_products_models = Product.objects.all()
+                for this_product in all_products_models:
+                    this_product.sku = ProductVendor.objects.filter(product=this_product, is_primary_vendor=1).first().sku
+                    all_products.append(convert_product_to_dict(this_product))
+            else:
+                search_vendor = Vendor.objects.get(id=int(request.POST["search_vendor"]))
+                all_products_by_vendor = ProductVendor.objects.filter(vendor=search_vendor)
+                all_product_vendor_products = []
+                for product_vendor in all_products_by_vendor:
+                    all_product_vendor_products.append(product_vendor.product)
+
+                for this_product in all_product_vendor_products:
+                    this_product.sku = ProductVendor.objects.filter(product=this_product, vendor=search_vendor).first().sku
+                    all_products.append(convert_product_to_dict(this_product))
+        else:
+            search_category = Category.objects.get(id=int(request.POST["search_category"]))
+            all_products_models = Product.objects.filter(category=search_category)
+            if request.POST["search_vendor"] == "all":
+                for this_product in all_products_models:
+                    this_product.sku = ProductVendor.objects.filter(product=this_product, is_primary_vendor=1).first().sku
+                    all_products.append(convert_product_to_dict(this_product))
+            else:
+                search_vendor = Vendor.objects.get(id=int(request.POST["search_vendor"]))
+                all_products_by_vendor = ProductVendor.objects.filter(vendor=search_vendor)
+                all_product_vendor_products = []
+                for product_vendor in all_products_by_vendor:
+                    all_product_vendor_products.append(product_vendor.product)
+
+                for this_product in all_product_vendor_products:
+                    if this_product.category.id == search_category.id:
+                        this_product.sku = ProductVendor.objects.filter(product=this_product, vendor=search_vendor).first().sku
+                        all_products.append(convert_product_to_dict(this_product))
+    else:
+        search_products = Product.objects.filter(name__contains=request.POST["search_term"])
+        if request.POST["search_category"] == "all":
+            if request.POST["search_vendor"] == "all":
+                for this_product in search_products:
+                    this_product.sku = ProductVendor.objects.filter(product=this_product, is_primary_vendor=1).first().sku
+                    all_products.append(convert_product_to_dict(this_product))
+            else:
+                search_vendor = Vendor.objects.get(id=int(request.POST["search_vendor"]))
+                all_products_by_vendor = ProductVendor.objects.filter(vendor=search_vendor)
+                all_product_vendor_products = []
+                for product_vendor in all_products_by_vendor:
+                    all_product_vendor_products.append(product_vendor.product)
+
+                for this_product in all_product_vendor_products:
+                    if this_product in search_products:
+                        this_product.sku = ProductVendor.objects.filter(product=this_product, vendor=search_vendor).first().sku
+                        all_products.append(convert_product_to_dict(this_product))
+        else:
+            search_category = Category.objects.get(id=int(request.POST["search_category"]))
+            all_products_models = Product.objects.filter(name__contains=request.POST["search_term"], category=search_category)
+            if request.POST["search_vendor"] == "all":
+                for this_product in all_products_models:
+                    this_product.sku = ProductVendor.objects.filter(product=this_product, is_primary_vendor=1).first().sku
+                    all_products.append(convert_product_to_dict(this_product))
+            else:
+                search_vendor = Vendor.objects.get(id=int(request.POST["search_vendor"]))
+                all_products_by_vendor = ProductVendor.objects.filter(vendor=search_vendor)
+                all_product_vendor_products = []
+                for product_vendor in all_products_by_vendor:
+                    all_product_vendor_products.append(product_vendor.product)
+
+                for this_product in all_product_vendor_products:
+                    if this_product in search_products and this_product.category.id == search_category.id:
+                        this_product.sku = ProductVendor.objects.filter(product=this_product, vendor=search_vendor).first().sku
+                        all_products.append(convert_product_to_dict(this_product))
+
+    all_products_dict["all_products"] = all_products
+
+    return JsonResponse(all_products_dict)
+
+def convert_product_to_dict(product):
+    product_dict = {}
+    product_dict["id"] = product.id
+    product_dict["barcode"] = product.barcode
+    product_dict["name"] = product.name
+    product_dict["description"] = product.description
+    product_dict["qty_available"] = product.qty_available
+    product_dict["price"] = product.price
+    product_dict["sku"] = product.sku
+    product_dict["category"] = product.category.name
+
+    return product_dict
 
 def view_product(request, product_id):
     if not "user_id" in request.session:

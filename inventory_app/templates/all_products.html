@@ -27,10 +27,11 @@
         <h1>All Products</h1>
         <form class="row row-cols-auto align-items-center" id="search-product-form" method="post">
             {% csrf_token %}
+            <input type="hidden" name="is_admin" id="is_admin" value="{{ this_user.is_admin }}">
             <div class="form-group col-3 row align-items-center">
                 <label for="search_category" class="col-4 form-label">Category:</label>
                 <select name="search_category" id="search_category" class="col-8 form-control">
-                    <option value="ALL">All</option>
+                    <option value="all">All</option>
                     {% for this_category in all_categories %}
                     <option value="{{ this_category.id }}">{{ this_category.name }}</option>
                     {% endfor %}
@@ -39,7 +40,7 @@
             <div class="form-group col-3 row align-items-center">
                 <label for="search_vendor" class="col-4 form-label">Vendor:</label>
                 <select name="search_vendor" id="search_vendor" class="col-8 form-control">
-                    <option value="ALL">All</option>
+                    <option value="all">All</option>
                     {% for this_vendor in all_vendors %}
                     <option value="{{ this_vendor.id }}">{{ this_vendor.name }}</option>
                     {% endfor %}
@@ -62,7 +63,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="all-products">
                 {% for curr_product in all_products %}
                 <tr>
                     <td>{{ curr_product.barcode }}</td>

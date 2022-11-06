@@ -25,6 +25,32 @@
     </nav>
     <div class="container-fluid">
         <h1>All Products</h1>
+        <form class="row row-cols-auto align-items-center" id="search-product-form" method="post">
+            {% csrf_token %}
+            <div class="form-group col-3 row align-items-center">
+                <label for="search_category" class="col-4 form-label">Category:</label>
+                <select name="search_category" id="search_category" class="col-8 form-control">
+                    <option value="ALL">All</option>
+                    {% for this_category in all_categories %}
+                    <option value="{{ this_category.id }}">{{ this_category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-3 row align-items-center">
+                <label for="search_vendor" class="col-4 form-label">Vendor:</label>
+                <select name="search_vendor" id="search_vendor" class="col-8 form-control">
+                    <option value="ALL">All</option>
+                    {% for this_vendor in all_vendors %}
+                    <option value="{{ this_vendor.id }}">{{ this_vendor.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-6 row align-items-center justify-content-around">
+                <label for="search_term" class="col-2 form-label">Product Name:</label>
+                <input type="text" id="search_term" name="search_term" class="col-8 form-control">
+                <input type="submit" class="btn btn-primary" value="Search">
+            </div>
+        </form>
         <table class="table table-striped">
             <thead>
                 <tr>

@@ -56,7 +56,7 @@ $(document).ready(function() {
     });
     $("#edit-product-form").on("submit", function(e) {
         e.preventDefault();
-        console.log("Form submitted.");
+        // console.log("Form submitted.");
         $.ajax( {
             type: "POST",
             url: "/products/" + $("input[name=product_id]").val() + "/update",
@@ -73,12 +73,12 @@ $(document).ready(function() {
     
             success: function(data) {
                 if (data.message) {
-                    console.log("Product update was successful");
+                    // console.log("Product update was successful");
                     window.location = "/products";
                 }
                 else {
-                    console.log("There were errors.");
-                    console.log(data);
+                    // console.log("There were errors.");
+                    // console.log(data);
                     $("#edit-product-errors").html("");
                     for (var msg in data) {
                         $("#edit-product-errors").append("<li class='text-danger'>" + data[msg] + "</li>");
@@ -93,7 +93,7 @@ $(document).ready(function() {
     });
     $("#new-product-vendor-form").on("submit", function(e) {
         e.preventDefault();
-        console.log("Form submitted.");
+        // console.log("Form submitted.");
         $.ajax( {
             type: "POST",
             url: "/products/" + $("input[name=product_id]").val() + "/add_vendor",
@@ -107,12 +107,12 @@ $(document).ready(function() {
     
             success: function(data) {
                 if (data.product) {
-                    console.log("Product vendor creation was successful");
+                    // console.log("Product vendor creation was successful");
                     window.location = "/products/" + data.product;
                 }
                 else {
-                    console.log("There were errors.");
-                    console.log(data);
+                    // console.log("There were errors.");
+                    // console.log(data);
                     $("#new-product-vendor-errors").html("");
                     for (var msg in data) {
                         $("#new-product-vendor-errors").append("<li class='text-danger'>" + data[msg] + "</li>");
@@ -137,7 +137,7 @@ $(document).ready(function() {
                 dataType: "json"
             },
             success: function(data) {
-                console.log(data);
+                // console.log(data);
             },
             error: function(errorMessage) {
                 console.log(errorMessage);
@@ -156,7 +156,7 @@ $(document).ready(function() {
                     dataType: "json"
                 },
                 success: function(data) {
-                    console.log("Product deleted.");
+                    // console.log("Product deleted.");
                     window.location = "/products";
                 },
                 error: function(errorMessage) {
@@ -164,6 +164,14 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
+    $("#search-product-form").on("submit", function(e) {
+        e.preventDefault();
+        console.log("Searching for products with the name " + $("#search_term").val() + " and category " + $("#search_category").val() + " and vendor " + $("#search_vendor").val());
+        loadProducts();
+    });
 });
 
+function loadProducts() {
+
+}

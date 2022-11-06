@@ -5,6 +5,7 @@ app_name = 'products'
 
 urlpatterns = [
     path('', views.all_products, name='all_products'),
+    path('search_products', views.search_products),
     path('<int:product_id>', views.view_product, name='view_product'),
     path('new', views.new_product_form, name='new_product_form'),
     path('add_product_to_db', views.add_product_to_db),

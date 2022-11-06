@@ -81,4 +81,26 @@ $(document).ready(function() {
             }
         });
     });
+    $("#delete-vendor").click(function(e) {
+        // console.log("Delete vendor link clicked.");
+        var result = confirm("Are you sure you want to delete " + $("#vendor_name").val());
+        if (result) {
+            $.ajax( {
+                type: "POST",
+                url: "/vendors/" + $("#vendor_id").val() + "/delete",
+                data: {
+                    "vendor_id": $("#vendor_id").val(),
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+                    dataType: "json"
+                },
+                success: function(data) {
+                    // console.log(data);
+                    window.location = "/vendors";
+                },
+                error: function(errorMessage) {
+                    console.log(errorMessage);
+                }
+            })
+        }
+    })
 });

@@ -23,6 +23,9 @@ def all_products(request):
     }
     return render(request, context=context, template_name="all_products.html")
 
+def search_products(request):
+    pass
+
 def view_product(request, product_id):
     if not "user_id" in request.session:
         return redirect("/")
@@ -41,7 +44,7 @@ def view_product(request, product_id):
 
     not_product_vendors = list(set(all_vendors) - set(all_product_vendor_vendors))
 
-    print(not_product_vendors)
+    # print(not_product_vendors)
         
     context = {
         "this_user": User.objects.filter(id=request.session["user_id"]).first(),

@@ -5,36 +5,8 @@ from .models import Vendor, Address
 from inventory_app.models import ProductVendor
 
 # Create your views here.
-def all_vendors(request):
-    if not "user_id" in request.session:
-        return redirect("/")
 
-    all_vendors = Vendor.objects.all()
-    for this_vendor in all_vendors:
-        this_vendor.product_count = len(ProductVendor.objects.filter(vendor=this_vendor))
-        
-    context = {
-        "this_user": User.objects.filter(id=request.session["user_id"]).first(),
-        "all_vendors": all_vendors
-    }
-    request.session["last_page"] = "all_vendors"
-    return render(request, context=context, template_name="all_vendors.html")
-
-def view_vendor(request, vendor_id):
-    if not "user_id" in request.session:
-        return redirect("/")
-
-    this_vendor = Vendor.objects.get(id=vendor_id)
-    all_vendor_products = ProductVendor.objects.filter(vendor=this_vendor)
-        
-    context = {
-        "this_user": User.objects.filter(id=request.session["user_id"]).first(),
-        "this_vendor": this_vendor,
-        "all_vendor_products": all_vendor_products
-    }
-    request.session["last_page"] = "view_vendor"
-    return render(request, context=context, template_name="view_vendor.html")
-
+# Generates a form that allows a user to create a new vendor.
 def new_vendor_form(request):
     if not "user_id" in request.session:
         return redirect("/")
@@ -45,6 +17,7 @@ def new_vendor_form(request):
     request.session["last_page"] = "new_vendor"
     return render(request, context=context, template_name="new_vendor.html")
 
+# Creates and adds a vendor to the database upon successful validation.
 def add_vendor_to_db(request):
     if not "user_id" in request.session:
         return redirect("/")
@@ -73,6 +46,39 @@ def add_vendor_to_db(request):
             return JsonResponse({ 'last_page': request.session["last_page"] })
     return JsonResponse({ 'message': 'All good!' })
 
+# Generates a table containing all the vendors in the database.
+def all_vendors(request):
+    if not "user_id" in request.session:
+        return redirect("/")
+
+    all_vendors = Vendor.objects.all()
+    for this_vendor in all_vendors:
+        this_vendor.product_count = len(ProductVendor.objects.filter(vendor=this_vendor))
+        
+    context = {
+        "this_user": User.objects.filter(id=request.session["user_id"]).first(),
+        "all_vendors": all_vendors
+    }
+    request.session["last_page"] = "all_vendors"
+    return render(request, context=context, template_name="all_vendors.html")
+
+# Delivers all information about the specified vendor, including a list of their products and their address.
+def view_vendor(request, vendor_id):
+    if not "user_id" in request.session:
+        return redirect("/")
+
+    this_vendor = Vendor.objects.get(id=vendor_id)
+    all_vendor_products = ProductVendor.objects.filter(vendor=this_vendor)
+        
+    context = {
+        "this_user": User.objects.filter(id=request.session["user_id"]).first(),
+        "this_vendor": this_vendor,
+        "all_vendor_products": all_vendor_products
+    }
+    request.session["last_page"] = "view_vendor"
+    return render(request, context=context, template_name="view_vendor.html")
+
+# Generates a form that allows a user to edit the speicifed vendor.
 def edit_vendor(request, vendor_id):
     if not "user_id" in request.session:
         return redirect("/")
@@ -84,6 +90,7 @@ def edit_vendor(request, vendor_id):
     request.session["last_page"] = "edit_vendor"
     return render(request, context=context, template_name="edit_vendor.html")
 
+# Updates the specified vendor upon successful validation.
 def update_vendor(request, vendor_id):
     if not "user_id" in request.session:
         return redirect("/")
@@ -101,7 +108,7 @@ def update_vendor(request, vendor_id):
     if len(errors) > 0:
         return JsonResponse(errors)
 
-    this_vendor = Vendor.objects.filter(id=vendor_id).first()
+    this_vendor = Vendor.objects.get(id=vendor_id)
     
     this_vendor.name = data["name"]
     this_vendor.description = data["description"]
@@ -114,11 +121,12 @@ def update_vendor(request, vendor_id):
 
     return JsonResponse({ 'message': 'All good!' })
 
+# Deletes the specified vendor from the database.
 def delete_vendor(request, vendor_id):
     if not "user_id" in request.session:
         return redirect("/")
 
-    this_vendor = Vendor.objects.filter(id=vendor_id).first()
+    this_vendor = Vendor.objects.get(id=vendor_id)
     this_vendor.delete()
 
     return redirect("/vendors")

@@ -3,6 +3,8 @@ import re
 import bcrypt
 
 # Create your models here.
+
+# Responsible for managing the User model, contains validation methods
 class UserManager(models.Manager):
     def validate_new_user(self, post_data):
         errors = {}
@@ -81,7 +83,8 @@ class UserManager(models.Manager):
             if post_data["password"] != post_data["confirm_password"]:
                 errors["confirm_password"] = "Passwords must match."
         return errors
-        
+    
+# Model used to hold information about a user.
 class User(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)

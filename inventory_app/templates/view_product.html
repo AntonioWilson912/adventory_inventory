@@ -14,13 +14,13 @@
         <h1 class="navbar-brand">Hello, {{ this_user.first_name }}</h1>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a href="{% url 'users:dashboard' %}" class="nav-link">Dashboard</a>
+                <a href="{% url 'users:dashboard' %}" class="nav-link text-light">Dashboard</a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'products:all_products' %}" class="nav-link">All Products</a>
+                <a href="{% url 'products:all_products' %}" class="nav-link text-light">All Products</a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
+                <a href="{% url 'users:logout' %}" class="nav-link text-light">Log Out</a>
             </li>
         </ul>
     </nav>
@@ -122,6 +122,9 @@
                                             {% if this_vendor.is_primary_vendor == 1 %}
                                                 checked
                                             {% endif %}
+                                            {% if this_user.is_admin == 0 %}
+                                                disabled
+                                            {% endif %}
                                             >
                                         </td>
                                     </tr>
@@ -129,7 +132,8 @@
                                 </form>
                             </tbody>
                         </table>
-                        <!-- New product vendor form -->
+                        <!-- New product vendor form displays only for admins-->
+                        {% if this_user.is_admin == 1 %}
                         <h1>Add a New Vendor</h1>
                         <form id="new-product-vendor-form" method="post" class="d-flex flex-column">
                             {% csrf_token %}
@@ -165,6 +169,7 @@
                                 <input type="submit" class="btn btn-indigo" value="Add">
                             </div>
                         </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>

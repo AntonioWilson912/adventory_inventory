@@ -2,6 +2,7 @@ from django.db import models
 from user_app.models import User
 from vendor_app.models import Vendor
 
+# Returns True if the user input is a floating-point number; returns False otherwise.
 def is_float(num):
     try:
         float(num) 
@@ -9,6 +10,7 @@ def is_float(num):
     except ValueError:
         return False # bad data
 
+# Returns True if the user input is an integer number; returns False otherwise.
 def is_int(num):
     try:
         int(num)
@@ -17,11 +19,14 @@ def is_int(num):
         return False # bad data
 
 # Create your models here.
+
+# Holds information about a category
 class Category(models.Model):
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+# Responsible for managing the Product model, contains validation methods
 class ProductManager(models.Manager):
     def validate_new_product(self, post_data):
         errors = {}
@@ -71,6 +76,7 @@ class ProductManager(models.Manager):
             errors["cost"] = "Cost must be a valid decimal number greater than 0.00"
         return errors
 
+# Model used to hold information about a product
 class Product(models.Model):
     barcode = models.CharField(max_length=12)
     name = models.CharField(max_length=255)
@@ -85,12 +91,14 @@ class Product(models.Model):
     product_vendors = models.ManyToManyField(Vendor, through="ProductVendor")
     objects = ProductManager()
 
+# Model used to contain information about when a product is updated and who updates it.
 class ProductUpdate(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+# Model used to contain information about all the vendors that distribute a particular product.
 class ProductVendor(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)

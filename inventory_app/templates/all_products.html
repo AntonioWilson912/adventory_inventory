@@ -13,13 +13,15 @@
         <h1 class="navbar-brand">Hello, {{ this_user.first_name }}</h1>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a href="{% url 'users:dashboard' %}" class="nav-link">Dashboard</a>
+                <a href="{% url 'users:dashboard' %}" class="nav-link text-light">Dashboard</a>
             </li>
+            {% if this_user.is_admin == 1 %}
             <li class="nav-item">
-                <a href="{% url 'products:new_product_form' %}" class="nav-link">+ New Product</a>
+                <a href="{% url 'products:new_product_form' %}" class="nav-link text-light">+ New Product</a>
             </li>
+            {% endif %}
             <li class="nav-item">
-                <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
+                <a href="{% url 'users:logout' %}" class="nav-link text-light">Log Out</a>
             </li>
         </ul>
     </nav>
@@ -63,24 +65,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="all-products">
-                {% for curr_product in all_products %}
-                <tr>
-                    <td>{{ curr_product.barcode }}</td>
-                    <td>{{ curr_product.sku }}</td>
-                    <td>{{ curr_product.category.name }}</td>
-                    <td>{{ curr_product.name }}</td>
-                    <td>${{ curr_product.price }}</td>
-                    <td>
-                        <a href="/products/{{ curr_product.id }}">View</a>
-                        {% if this_user.is_admin == 1 %}
-                        | <a href="/products/{{ curr_product.id }}/edit">Edit</a>
-                        | <a href="/products/{{ curr_product.id }}/delete">Delete</a>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
+            <tbody id="all-products"></tbody>
         </table>
     </div>
     <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}" ></script>

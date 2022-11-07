@@ -13,13 +13,13 @@
         <h1 class="navbar-brand">Hello, {{ this_user.first_name }}</h1>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a href="{% url 'users:dashboard' %}" class="nav-link">Dashboard</a>
+                <a href="{% url 'users:dashboard' %}" class="nav-link text-light">Dashboard</a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'users:all_users' %}" class="nav-link">All Users</a>
+                <a href="{% url 'users:all_users' %}" class="nav-link text-light">All Users</a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'users:logout' %}" class="nav-link">Log Out</a>
+                <a href="{% url 'users:logout' %}" class="nav-link text-light">Log Out</a>
             </li>
         </ul>
     </nav>

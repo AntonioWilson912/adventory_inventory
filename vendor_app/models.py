@@ -2,6 +2,8 @@ from django.db import models
 from user_app.models import User
 
 # Create your models here.
+
+# Responsible for managing the Vendor model, contains validation methods
 class VendorManager(models.Manager):
     def validate_new_vendor(self, post_data):
         errors = {}
@@ -17,6 +19,7 @@ class VendorManager(models.Manager):
             errors["zip_code"] = "Zip code must be exactly 5 digits long."
         return errors
 
+# Model used to hold information about the address of a vendor.
 class Address(models.Model):
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
@@ -25,6 +28,7 @@ class Address(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+# Model used to hold information about a vendor.
 class Vendor(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()

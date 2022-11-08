@@ -26,7 +26,7 @@
     </nav>
     <div class="container-fluid p-5">
         <div class="container">
-            <h1 class="text-purple">Edit {{ this_vendor.name }}</h1>
+            <h1 class="text-indigo">Edit {{ this_vendor.name }}</h1>
             <form id="edit-vendor-form" method="post" class="d-flex flex-column">
                 {% csrf_token %}
                 <input type="hidden" name="vendor_id" value="{{ this_vendor.id }}">

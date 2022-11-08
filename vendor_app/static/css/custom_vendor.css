@@ -4,56 +4,56 @@
     border-color: #6610f2;
 }
 
-.text-purple {
+.text-indigo {
     color: #6601f2;
 }
 
-.link-purple, a.link-purple {
+.link-indigo, a.link-indigo {
     color: #6601f2;
 }
 
-.link-purple:hover, a.link-purple:hover {
+.link-indigo:hover, a.link-indigo:hover {
     color: #8d45f3;
 }
 
-.bg-purple {
+.bg-indigo {
     color: white;
-    background-color: #8d45f3 !important;
+    background-color: #6610f2 !important;
 }
 
-.bg-light-purple {
+.bg-light-indigo {
     color: white;
     background-color: #a581e0;
 }
 
-.table-purple th {
+.table-indigo th {
     background-color: #6610f2;
     color: white;
 }
 
-.table-purple tr {
+.table-indigo tr {
     background-color: #a581e0;
     color: white;
 }
 
-.table-purple tr:nth-child(even) {
+.table-indigo tr:nth-child(even) {
     background-color:#e0d4f3;
     color: black;
 }
 
-.table-purple tr a {
+.table-indigo tr a {
     color: white;
 }
 
-.table-purple tr a:hover {
+.table-indigo tr a:hover {
     color: #6601f2;
 }
 
-.table-purple tr:nth-child(even) a {
+.table-indigo tr:nth-child(even) a {
     color: black;
 }
 
-.table-purple tr:nth-child(even) a:hover {
+.table-indigo tr:nth-child(even) a:hover {
     color: #6601f2;
 }
 
@@ -62,7 +62,7 @@
     box-shadow: 0 0 2px 2px #8d45f3;
 }
 
-.border-purple {
+.border-indigo {
     border-color: #6601f2;
 }
 

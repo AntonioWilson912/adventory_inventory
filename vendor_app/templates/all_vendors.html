@@ -27,8 +27,8 @@
         </ul>
     </nav>
     <div class="container-fluid p-4">
-        <h1 class="text-center text-purple">All Vendors</h1>
-        <table class="table table-purple mt-4">
+        <h1 class="text-center text-indigo">All Vendors</h1>
+        <table class="table table-indigo mt-4">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -42,10 +42,10 @@
                     <td>{{ curr_vendor.name }}</td>
                     <td>{{ curr_vendor.product_count }}</td>
                     <td>
-                        <a href="/vendors/{{ curr_vendor.id }}" class="link-purple">View</a>
+                        <a href="/vendors/{{ curr_vendor.id }}" class="link-indigo">View</a>
                         {% if this_user.is_admin == 1 %}
-                        | <a href="/vendors/{{ curr_vendor.id}}/edit" class="link-purple">Edit</a> |
-                        <a href="/vendors/{{ curr_vendor.id}}/delete" class="link-purple">Delete</a>
+                        | <a href="/vendors/{{ curr_vendor.id}}/edit" class="link-indigo">Edit</a> |
+                        <a href="/vendors/{{ curr_vendor.id}}/delete" class="link-indigo">Delete</a>
                         {% endif %}
                     </td>
                 </tr>

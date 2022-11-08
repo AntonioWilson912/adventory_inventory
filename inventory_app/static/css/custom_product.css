@@ -4,30 +4,30 @@
     border-color: #6610f2;
 }
 
-.link-purple {
+.link-indigo {
     color: #6601f2;
 }
 
-.link-purple:hover {
+.link-indigo:hover {
     color: #8d45f3;
 }
 
-.bg-purple {
+.bg-indigo {
     color: white;
     background-color: #8d45f3 !important;
 }
 
-.table-purple th {
+.table-indigo th {
     background-color: #6610f2;
     color: white;
 }
 
-.table-purple tr {
+.table-indigo tr {
     background-color: #a581e0;
     color: white;
 }
 
-.table-purple tr:nth-child(even) {
+.table-indigo tr:nth-child(even) {
     background-color:#e0d4f3;
     color: black;
 }

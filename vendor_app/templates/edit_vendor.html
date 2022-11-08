@@ -7,7 +7,7 @@
     <title>{{ this_vendor.name }} - Edit - Adventory Inventory</title>
     {% load static %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom_vendor.css' %}">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-between">
@@ -26,7 +26,7 @@
     </nav>
     <div class="container-fluid p-5">
         <div class="container">
-            <h1>Edit {{ this_vendor.name }}</h1>
+            <h1 class="text-purple">Edit {{ this_vendor.name }}</h1>
             <form id="edit-vendor-form" method="post" class="d-flex flex-column">
                 {% csrf_token %}
                 <input type="hidden" name="vendor_id" value="{{ this_vendor.id }}">
@@ -34,37 +34,37 @@
                 <div class="form-group row">
                     <label for="name" class="col-sm-3 col-form-label">Name:</label>
                     <div class="col-sm-4">
-                        <input type="text" name="name" class="form-control" value="{{ this_vendor.name }}">
+                        <input type="text" name="name" class="form-control vendor" value="{{ this_vendor.name }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="description" class="col-sm-3 col-form-label">Description:</label>
                     <div class="col-sm-4">
-                        <textarea name="description" id="description" class="form-control">{{ this_vendor.description }}</textarea>
+                        <textarea name="description" id="description" class="form-control vendor">{{ this_vendor.description }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="address" class="col-sm-3 col-form-label">Address:</label>
                     <div class="col-sm-4">
-                        <input type="text" name="address" class="form-control" value="{{ this_vendor.address.address }}">
+                        <input type="text" name="address" class="form-control vendor" value="{{ this_vendor.address.address }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="city" class="col-sm-3 col-form-label">City:</label>
                     <div class="col-sm-4">
-                        <input type="text" name="city" class="form-control" value="{{ this_vendor.address.city }}">
+                        <input type="text" name="city" class="form-control vendor" value="{{ this_vendor.address.city }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="state" class="col-sm-3 col-form-label">State:</label>
                     <div class="col-sm-2">
-                        <input type="text" name="state" class="form-control" value="{{ this_vendor.address.state }}">
+                        <input type="text" name="state" class="form-control vendor" value="{{ this_vendor.address.state }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="zip_code" class="col-sm-3 col-form-label">Zip Code:</label>
                     <div class="col-sm-3">
-                        <input type="text" name="zip_code" class="form-control" value="{{ this_vendor.address.zip_code }}">
+                        <input type="text" name="zip_code" class="form-control vendor" value="{{ this_vendor.address.zip_code }}">
                     </div>
                 </div>
                 <div>

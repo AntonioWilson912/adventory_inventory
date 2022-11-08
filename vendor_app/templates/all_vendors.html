@@ -7,6 +7,7 @@
     <title>Vendors - Adventory Inventory</title>
     {% load static %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/custom_vendor.css' %}">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-between">
@@ -25,9 +26,9 @@
             </li>
         </ul>
     </nav>
-    <div class="container-fluid">
-        <h1>All Vendors</h1>
-        <table class="table table-striped">
+    <div class="container-fluid p-4">
+        <h1 class="text-center text-purple">All Vendors</h1>
+        <table class="table table-purple mt-4">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -41,10 +42,10 @@
                     <td>{{ curr_vendor.name }}</td>
                     <td>{{ curr_vendor.product_count }}</td>
                     <td>
-                        <a href="/vendors/{{ curr_vendor.id }}">View</a>
+                        <a href="/vendors/{{ curr_vendor.id }}" class="link-purple">View</a>
                         {% if this_user.is_admin == 1 %}
-                        | <a href="/vendors/{{ curr_vendor.id}}/edit">Edit</a> |
-                        <a href="/vendors/{{ curr_vendor.id}}/delete">Delete</a>
+                        | <a href="/vendors/{{ curr_vendor.id}}/edit" class="link-purple">Edit</a> |
+                        <a href="/vendors/{{ curr_vendor.id}}/delete" class="link-purple">Delete</a>
                         {% endif %}
                     </td>
                 </tr>

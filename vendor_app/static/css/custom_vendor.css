@@ -1,5 +1,68 @@
-.btn.btn-indigo {
+.btn-indigo {
     color: #fff;
     background-color: #6610f2;
     border-color: #6610f2;
 }
+
+.text-purple {
+    color: #6601f2;
+}
+
+.link-purple, a.link-purple {
+    color: #6601f2;
+}
+
+.link-purple:hover, a.link-purple:hover {
+    color: #8d45f3;
+}
+
+.bg-purple {
+    color: white;
+    background-color: #8d45f3 !important;
+}
+
+.bg-light-purple {
+    color: white;
+    background-color: #a581e0;
+}
+
+.table-purple th {
+    background-color: #6610f2;
+    color: white;
+}
+
+.table-purple tr {
+    background-color: #a581e0;
+    color: white;
+}
+
+.table-purple tr:nth-child(even) {
+    background-color:#e0d4f3;
+    color: black;
+}
+
+.table-purple tr a {
+    color: white;
+}
+
+.table-purple tr a:hover {
+    color: #6601f2;
+}
+
+.table-purple tr:nth-child(even) a {
+    color: black;
+}
+
+.table-purple tr:nth-child(even) a:hover {
+    color: #6601f2;
+}
+
+.form-control.vendor:focus {
+    border-color: #6601f2;
+    box-shadow: 0 0 2px 2px #8d45f3;
+}
+
+.border-purple {
+    border-color: #6601f2;
+}
+

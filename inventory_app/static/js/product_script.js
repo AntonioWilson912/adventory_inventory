@@ -3,14 +3,14 @@ $(document).ready(function() {
         if (!$("#info-tab").hasClass("active")) {
             $("#info-tab").addClass("active");
             $("#info").addClass("show").addClass("active");
-            $("#vendor-tab").removeClass("active");
+            $("#vendor-tab").removeClass("active").removeClass("bg-purple");
             $("#vendors").removeClass("show").removeClass("active");
         }
     });
     $("#vendor-tab").click(function() {
         if (!$("#vendor-tab").hasClass("active")) {
             $("#info-tab").removeClass("active");
-            $("#vendor-tab").addClass("active");
+            $("#vendor-tab").addClass("active").addClass("bg-purple");
             $("#info").removeClass("show").removeClass("active");
             $("#vendors").addClass("show").addClass("active");
         }

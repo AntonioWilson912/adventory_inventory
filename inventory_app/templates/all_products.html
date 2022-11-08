@@ -25,9 +25,9 @@
             </li>
         </ul>
     </nav>
-    <div class="container-fluid">
-        <h1>All Products</h1>
-        <form class="row row-cols-auto align-items-center" id="search-product-form" method="post">
+    <div class="container-fluid p-4">
+        <h1 class="text-primary">All Products</h1>
+        <form class="row row-cols-auto align-items-center my-4" id="search-product-form" method="post">
             {% csrf_token %}
             <input type="hidden" name="is_admin" id="is_admin" value="{{ this_user.is_admin }}">
             <div class="form-group col-3 row align-items-center">

@@ -24,8 +24,9 @@
             </li>
         </ul>
     </nav>
-    <div class="container-fluid m-5">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <div class="container-fluid p-5">
+        <h1 class="display-4 mb-5">{{ this_product.name }}</h1>
+        <ul class="nav nav-pills" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">Information</button>
             </li>
@@ -33,18 +34,10 @@
                 <button class="nav-link" id="vendor-tab" data-bs-toggle="tab" data-bs-target="#vendors" type="button" role="tab" aria-controls="vendors" aria-selected="false">Vendors</button>
             </li>
         </ul>
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content border border-dark p-4" id="myTabContent">
             <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
                 <div class="row d-flex">
                     <div class="col-10">
-                        <div class="row">
-                            <div class="col-2">
-                                <p>Product Name:</p>
-                            </div>
-                            <div class="col-8">
-                                <p>{{ this_product.name }}</p>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-2">
                                 <p>Description:</p>
@@ -99,7 +92,7 @@
             <div class="tab-pane fade" id="vendors" role="tabpanel" aria-labelledby="vendor-tab">
                 <div class="row d-flex">
                     <div class="col-10">
-                        <table class="table table-striped">
+                        <table class="table table-purple">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -134,7 +127,7 @@
                         </table>
                         <!-- New product vendor form displays only for admins-->
                         {% if this_user.is_admin == 1 %}
-                        <h1>Add a New Vendor</h1>
+                        <h3 class="border-top mt-4 p-3">Add a New Vendor</h3>
                         <form id="new-product-vendor-form" method="post" class="d-flex flex-column">
                             {% csrf_token %}
                             <input type="hidden" name="product_id" value="{{ this_product.id }}">
@@ -142,7 +135,7 @@
                             <div class="form-group row">
                                 <label for="vendor_id" class="col-sm-3 col-form-label">Name:</label>
                                 <div class="col-sm-4">
-                                    <select name="vendor_id" id="vendor_id" class="form-control">
+                                    <select name="vendor_id" id="vendor_id" class="form-control vendor">
                                         <option value="-1">Select a vendor...</option>
                                         {% for this_vendor in not_product_vendors %}
                                             <option value="{{ this_vendor.id }}">{{ this_vendor.name }}</option>
@@ -153,19 +146,19 @@
                             <div class="form-group row">
                                 <label for="sku" class="col-sm-3 col-form-label">Vendor Number:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" name="sku" class="form-control">
+                                    <input type="text" name="sku" class="form-control vendor">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="cost" class="col-sm-3 col-form-label">Cost ($):</label>
                                 <div class="col-sm-4">
-                                    <input type="text" name="cost" class="form-control">
+                                    <input type="text" name="cost" class="form-control vendor">
                                 </div>
                             </div>
                             <div>
-                                <a href="{% url 'vendors:new_vendor_form' %}">Need to create a vendor?</a>
+                                <a href="{% url 'vendors:new_vendor_form' %}" class="link-purple">Need to create a vendor?</a>
                             </div>
-                            <div>
+                            <div class="mt-4">
                                 <input type="submit" class="btn btn-indigo" value="Add">
                             </div>
                         </form>

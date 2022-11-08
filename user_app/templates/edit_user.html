@@ -25,7 +25,7 @@
     </nav>
     <div class="container-fluid p-5">
         <div class="container">
-            <h1>Edit {{ requested_user.first_name }} {{ requested_user.last_name }}</h1>
+            <h1 class="text-success">Edit {{ requested_user.first_name }} {{ requested_user.last_name }}</h1>
             <form id="edit-user-form" action="/users/{{ requested_user.id }}/update_user_in_db" method="post" class="d-flex flex-column">
                 {% csrf_token %}
                 <ul id="edit-user-errors"></ul>

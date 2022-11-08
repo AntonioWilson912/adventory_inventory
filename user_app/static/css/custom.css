@@ -7,3 +7,35 @@
     background-color: #6610f2;
     border-color: #6610f2;
 }
+
+.bg-gray {
+    background-color: rgb(207, 207, 207);
+}
+
+.table-green th {
+    background-color: rgb(45, 131, 45);
+}
+
+.table-green tr {
+    background-color: rgb(170, 230, 170);
+}
+
+.table-green tr:nth-child(even) {
+    background-color:rgb(194, 233, 194)
+}
+
+.link-light {
+    color: white;
+}
+
+.link-light:hover {
+    color: #ddd;
+}
+
+.link-dark {
+    color: black;
+}
+
+.link-dark:hover {
+    color: rgb(79, 107, 76);
+}

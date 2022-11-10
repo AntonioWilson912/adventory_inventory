@@ -121,7 +121,7 @@ def search_products(request):
             if request.POST["search_vendor"] == "all":
                 all_products_models = Product.objects.all()
                 for this_product in all_products_models:
-                    this_product.sku = ProductVendor.objects.filter(product=this_product, is_primary_vendor=1).first().sku
+                    this_product.sku = ProductVendor.objects.filter(product=this_product, is_primary_vendor=1).first().sku if ProductVendor.objects.filter(product=this_product, is_primary_vendor=1).first() else None
                     all_products.append(convert_product_to_dict(this_product))
             else:
                 search_vendor = Vendor.objects.get(id=int(request.POST["search_vendor"]))

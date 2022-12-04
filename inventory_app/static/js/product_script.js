@@ -174,6 +174,30 @@ $(document).ready(function() {
         // console.log("Searching for products with the name " + $("#search_term").val() + " and category " + $("#search_category").val() + " and vendor " + $("#search_vendor").val());
         loadProducts(searchTerm, searchCategory, searchVendor);
     });
+    $("#search_term").on("input", function(e) {
+        e.preventDefault();
+        var searchTerm = $("#search_term").val();
+        var searchCategory = $("#search_category").val();
+        var searchVendor = $("#search_vendor").val();
+        // console.log("Searching for products with the name " + $("#search_term").val() + " and category " + $("#search_category").val() + " and vendor " + $("#search_vendor").val());
+        loadProducts(searchTerm, searchCategory, searchVendor);
+    });
+    $("#search_category").on("change", function(e) {
+        e.preventDefault();
+        var searchTerm = $("#search_term").val();
+        var searchCategory = $("#search_category").val();
+        var searchVendor = $("#search_vendor").val();
+        // console.log("Searching for products with the name " + $("#search_term").val() + " and category " + $("#search_category").val() + " and vendor " + $("#search_vendor").val());
+        loadProducts(searchTerm, searchCategory, searchVendor);
+    });
+    $("#search_vendor").on("change", function(e) {
+        e.preventDefault();
+        var searchTerm = $("#search_term").val();
+        var searchCategory = $("#search_category").val();
+        var searchVendor = $("#search_vendor").val();
+        // console.log("Searching for products with the name " + $("#search_term").val() + " and category " + $("#search_category").val() + " and vendor " + $("#search_vendor").val());
+        loadProducts(searchTerm, searchCategory, searchVendor);
+    });
 });
 
 function loadProducts(searchTerm, searchCategory, searchVendor) {

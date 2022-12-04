@@ -83,8 +83,9 @@ def add_product_vendor(request, product_id):
     # otherwise, create the product vendor, set the primary to not primary and set the new one to primary
     this_product = Product.objects.get(id=product_id)
     previous_primary_vendor = ProductVendor.objects.filter(product=this_product, is_primary_vendor=1).first()
-    previous_primary_vendor.is_primary_vendor = 0
-    previous_primary_vendor.save()
+    if previous_primary_vendor:
+        previous_primary_vendor.is_primary_vendor = 0
+        previous_primary_vendor.save()
 
     product_vendor = Vendor.objects.get(id=data["vendor_id"])
     ProductVendor.objects.create(product=this_product, vendor=product_vendor, sku=data["sku"], cost=data["cost"], is_primary_vendor=1)
@@ -263,6 +264,7 @@ def update_product(request, product_id):
     updated_product.name = data["name"]
     updated_product.barcode = data["barcode"]
     updated_product.category = product_category
+    updated_product.price = data["price"]
     updated_product.qty_available = data["qty_available"]
     updated_product.save()
 
@@ -289,7 +291,7 @@ def update_primary_vendor(request, product_id):
             current_product_vendor.is_primary_vendor = 0
             current_product_vendor.save()
 
-    product_update = ProductUpdate.objects.filter(product=current_product)
+    product_update = ProductUpdate.objects.filter(product=current_product).first()
     product_update.user = User.objects.filter(id=request.session["user_id"]).first()
     product_update.save()
 
